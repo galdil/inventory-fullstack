@@ -1,47 +1,56 @@
 import { Schema, Document, model, Model } from 'mongoose';
+import { BikeProductSchema, type IBike } from './products-adapters/bike-model';
+import { SpeakerProductSchema, type ISpeaker } from './products-adapters/speaker-model';
+import { LaptopProductSchema, type ILaptop } from './products-adapters/laptop-model';
 
-type ProductType = 'bike' | 'speaker' | 'chair';
+export type ProductType = 'bike' | 'speaker' | 'laptop';
+
+const baseOptions = {
+  discriminatorKey: 'type',
+  collection: 'products',
+};
 
 interface ProductStats {
   count: number,
   type: ProductType,
 }
 
-export interface IProduct extends Document {
+export interface BaseProduct extends Document {
   name: string;
   description: string;
   price: number;
   type: ProductType;
-  properties?: Record<string, unknown>;
 }
 
-export interface IProductModel extends Model<IProduct> {
-  getProductsStats(): Promise<[ProductStats]>
+export type Product = IBike | ISpeaker | ILaptop;
+
+export interface IProductModel extends Model<BaseProduct> {
+  getProductsStats(): Promise<ProductStats[]>
 }
 
-const Product = new Schema<IProduct>({
-  name: { 
-    type: String,
-    required: true,
+const ProductSchema = new Schema<BaseProduct>(
+  {
+    name: { 
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  properties: { 
-    type: Schema.Types.Mixed,
-  },
-});
+  baseOptions,
+);
 
-Product.statics.getProductsStats = async function getProductsStats() {
+ProductSchema.statics.getProductsStats = async function getProductsStats() {
   const productsByType = await this.aggregate([
     { $group: { _id: '$type', count: { $sum: 1 } } },
     { $project: { _id: 0, type: '$_id', count: 1 } },
@@ -49,5 +58,11 @@ Product.statics.getProductsStats = async function getProductsStats() {
   return productsByType;
 };
 
+const ProductModel = model<Product, IProductModel>('Product', ProductSchema);
 
-export default model<IProduct, IProductModel>('Product', Product);
+ProductModel.discriminator<IBike>('bike', BikeProductSchema);
+ProductModel.discriminator<ISpeaker>('speaker', SpeakerProductSchema);
+ProductModel.discriminator<ILaptop>('laptop', LaptopProductSchema);
+
+
+export default ProductModel;
