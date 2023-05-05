@@ -2,7 +2,7 @@ import { Schema, Document, model } from 'mongoose';
 
 type ProductType = 'bike' | 'speaker' | 'chair';
 
-interface Product extends Document {
+export interface IProduct extends Document {
   name: string;
   description: string;
   price: number;
@@ -11,7 +11,7 @@ interface Product extends Document {
   properties: Record<string, unknown>;
 }
 
-const ProductSchema = new Schema<Product>({
+const Product = new Schema<IProduct>({
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
@@ -19,6 +19,5 @@ const ProductSchema = new Schema<Product>({
   properties: { type: Schema.Types.Mixed }, // any additional properties
 });
 
-const ProductModel = model<Product>('Product', ProductSchema);
 
-export { Product, ProductModel };
+export default model<IProduct>('Product', Product);

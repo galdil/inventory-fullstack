@@ -18,9 +18,9 @@ mongoose.connect(process.env.MONGODB_URL, {
   maxPoolSize: 10,
 });
 
-// db.on('error', (err = {}) => {
-//   console.error(err);
-// });
+db.on('error', (err = {}) => {
+  console.error(err);
+});
 
 db.on('open', async () => {
   console.log('Successfully connected to db');
