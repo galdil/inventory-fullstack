@@ -11,6 +11,14 @@ const productRepo = {
       throw new ProductCreationException(err?.message);
     }
   },
+  getProducts: async () => {
+    try {
+      const productDoc = Product.getProductsStats();
+      return await productDoc;
+    } catch (err) {
+      throw new ProductCreationException(err?.message);
+    }
+  },
 };
 
 export default productRepo;
