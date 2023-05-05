@@ -4,3 +4,10 @@ export class ProductCreationException extends Error {
     this.message = message;
   }
 }
+
+export class ProductStatsException extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}

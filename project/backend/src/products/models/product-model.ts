@@ -2,6 +2,11 @@ import { Schema, Document, model, Model } from 'mongoose';
 
 type ProductType = 'bike' | 'speaker' | 'chair';
 
+interface ProductStats {
+  count: number,
+  type: ProductType,
+}
+
 export interface IProduct extends Document {
   name: string;
   description: string;
@@ -11,7 +16,7 @@ export interface IProduct extends Document {
 }
 
 export interface IProductModel extends Model<IProduct> {
-  getProductsStats(): Promise<IProduct>
+  getProductsStats(): Promise<[ProductStats]>
 }
 
 const Product = new Schema<IProduct>({

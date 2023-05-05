@@ -1,22 +1,22 @@
 import Product, { IProduct } from '../models/product-model';
 
-import { ProductCreationException } from '../../common/errors';
+import { ProductCreationException, ProductStatsException } from '../../common/errors';
 
 const productRepo = {
   createProduct: async (productData: IProduct) => {
     try {
-      const productDoc = Product.create(productData);
-      return await productDoc;
+      const productDoc = await Product.create(productData);
+      return productDoc;
     } catch (err) {
       throw new ProductCreationException(err?.message);
     }
   },
   getProducts: async () => {
     try {
-      const productDoc = Product.getProductsStats();
-      return await productDoc;
+      const productStats = await Product.getProductsStats();
+      return productStats;
     } catch (err) {
-      throw new ProductCreationException(err?.message);
+      throw new ProductStatsException(err?.message);
     }
   },
 };
