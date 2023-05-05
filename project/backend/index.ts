@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import configureRoutes from './http/routes';
@@ -8,6 +9,8 @@ dotenv.config();
 
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(bodyParser.json());
 
 configureRoutes(app);
 
