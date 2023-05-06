@@ -1,11 +1,14 @@
 import Button from '@components/Button/Button';
 
+import { type NavigatorProps } from './types';
+
 import './navigator.css';
 
-const Navigator = (): JSX.Element => (
+const Navigator = ({ productsStats }: NavigatorProps): JSX.Element => (
   <div className="navigator-wrapper">
-    <Button label="Bike count 30" />
-    <Button label="laptop count 3" />
+    {productsStats.map((p) => (
+      <Button key={p.type} label={`${p.type} - ${p.count}`} />
+    ))}
   </div>
 );
 
