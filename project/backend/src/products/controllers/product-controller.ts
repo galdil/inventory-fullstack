@@ -37,3 +37,13 @@ export const getProductsByType = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getProductFieldsValuesByType = async (req: Request, res: Response) => {
+  try {
+    const { type }: { type: ProductType } = req.params;
+    const fields = await ProductRepo.getProductsFieldsByType(type);
+    res.json(fields);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

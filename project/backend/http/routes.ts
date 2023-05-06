@@ -12,6 +12,9 @@ export default function configureRoutes(app: express.Application) {
   app.get('/products/:type', ProductCtrl.getProductsByType);
 
   
+  app.get('/products/fields/:type', ProductCtrl.getProductFieldsValuesByType);
+
+  
   /*
    /products/bike?filters[price]=2&filters[name]=avi&sortBy=name&sortOrder=asc&page=5&items=10
   {

@@ -18,3 +18,10 @@ export class ProductByTypeException extends Error {
     this.message = message;
   }
 }
+
+export class ProductsFieldsByTypeException extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}

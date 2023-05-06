@@ -1,7 +1,9 @@
 import ProductModel from '../models/product-model';
 import { type ProductType, type Product, type SortOrder } from '../../../../common/sharedTypes';
 
-import { ProductCreationException, ProductStatsException, ProductByTypeException } from '../../common/errors';
+import {
+  ProductCreationException, ProductStatsException, ProductByTypeException, ProductsFieldsByTypeException,
+} from '../../common/errors';
 
 type ProductsFields = keyof Product;
 
@@ -34,6 +36,20 @@ const productRepo = {
       return productStats;
     } catch (err) {
       throw new ProductByTypeException(err?.message);
+    }
+  },
+  getProductsFieldsByType: async (type: ProductType): Promise<Product> => {
+    try {
+      const products = await ProductModel.find({ type }).select('-_id -__v').lean();
+      const fields = Object.keys(products?.[0]);
+      const filters = {} as Product;
+      for (const field of fields) {
+        const values = new Set(products.map(product => product[field]));
+        filters[field] = [...values];
+      }
+      return filters;
+    } catch (err) {
+      throw new ProductsFieldsByTypeException(err?.message);
     }
   },
 };
