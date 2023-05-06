@@ -1,0 +1,6 @@
+.sections-wrapper {
+  display: grid;
+  grid-template-columns: auto 1px auto;
+  column-gap: 10px;
+}
+
