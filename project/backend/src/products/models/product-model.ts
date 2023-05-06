@@ -54,7 +54,7 @@ const ProductSchema = new Schema<BaseProduct>(
 ProductSchema.statics.getProductsStats = async function getProductsStats() {
   const productsByType = await this.aggregate([
     { $group: { _id: '$type', count: { $sum: 1 } } },
-    { $project: { _id: 0, type: '$_id', count: 1 } },
+    { $project: { type: '$_id', count: 1, _id: 0 } },
     { $sort: { type: 1 } },
   ]);
   return productsByType;
@@ -63,6 +63,13 @@ ProductSchema.statics.getProductsStats = async function getProductsStats() {
 ProductSchema.statics.getProductsByType = async function getProductsByType(query, sortQuery) {
   const productsByType = await this.find(query).sort(sortQuery).exec();
   return productsByType;
+};
+
+ProductSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj._id;
+  delete obj.__v;
+  return obj;
 };
 
 const ProductModel = model<Product, IProductModel>('Product', ProductSchema);
