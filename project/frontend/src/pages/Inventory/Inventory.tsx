@@ -1,11 +1,12 @@
 import Divider from '@mui/material/Divider';
+import Navigator from '@components/Navigator/Navigator';
 
 import './inventory.css';
 
 const Inventory = (): JSX.Element => (
   <div className="sections-wrapper">
-    <div>hi</div>
-    <Divider orientation="vertical" sx={{ borderColor: 'white' }} />
+    <Navigator />
+    <Divider orientation="vertical" sx={{ borderColor: 'white', height: '100%' }} />
     <div>Gal</div>
   </div>
 );
