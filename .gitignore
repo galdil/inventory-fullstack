@@ -8,6 +8,7 @@
 
 
 /project/backend/dist
+/project/frontend/dist
 
 # misc
 .DS_Store
