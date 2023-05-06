@@ -1,7 +1,7 @@
 import { type ProductType } from '../../../common/sharedTypes';
 
 type ProductStats = {
-  count: Number;
+  count: number;
   type: ProductType;
 };
 

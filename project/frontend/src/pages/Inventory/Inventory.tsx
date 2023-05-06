@@ -13,15 +13,18 @@ import './inventory.css';
 const Inventory = (): JSX.Element => {
   const [productsStats, setProductsStats] = useState<ProductStats[]>([]);
   const [currentType, setCurrentType] = useState<ProductType>();
+  const [currentCount, setCurrentCount] = useState<number>(0);
   const [productsData, setProductsData] = useState<Product[]>();
-  const [queryParams, setQueryParams] = useState<QueryParamsObj>();
+  const [queryParams, setQueryParams] = useState<QueryParamsObj>({ page: '1', items: '5' });
 
   const handleTypeSelection = (selectedType: ProductType): void => {
     setCurrentType(selectedType);
+    const selectedTypeCount = productsStats.find((product) => product.type === selectedType)?.count || 0;
+    setCurrentCount(selectedTypeCount);
   };
 
   const handleQueryChange = (queryParamsObj: QueryParamsObj): void => {
-    setQueryParams(queryParamsObj);
+    setQueryParams({ ...queryParams, ...queryParamsObj });
   };
 
   useEffect(() => {
@@ -30,6 +33,7 @@ const Inventory = (): JSX.Element => {
       const productsStatsRes = response?.data;
       setProductsStats(productsStatsRes);
       setCurrentType(productsStatsRes?.[0].type);
+      setCurrentCount(productsStatsRes?.[0].count);
     };
     fetchData();
   }, []);
@@ -53,7 +57,7 @@ const Inventory = (): JSX.Element => {
         handleTypeSelection={handleTypeSelection}
       />
       <Divider orientation="vertical" sx={{ borderColor: 'white', height: '100%' }} />
-      <ProductsTable data={productsData} handleQueryChange={handleQueryChange} />
+      <ProductsTable data={productsData} handleQueryChange={handleQueryChange} productCount={currentCount} />
     </div>
   );
 };

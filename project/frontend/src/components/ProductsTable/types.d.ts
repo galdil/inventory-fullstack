@@ -3,5 +3,6 @@ import { type Product } from '../../../../common/sharedTypes';
 
 type ProductTableProps = {
   data?: Product[];
-  handleQueryChange: (queryParamObj: QueryParamsObj) => void
+  handleQueryChange: (queryParamObj: QueryParamsObj) => void;
+  productCount: number;
 };
