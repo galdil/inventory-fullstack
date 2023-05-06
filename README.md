@@ -12,14 +12,14 @@ To start the application, please follow these steps:
 
 1. Navigate to project/backend
 2. Run `npm install`
-3. Run `npm build` 
+3. Run `npm run build` 
 4. Run `npm run start` to start the backend server.
 
 ### FE
 
 1. Navigate to project/frontend
 2. Run `npm install`
-3. Run `npm build` 
+3. Run `npm run build` 
 4. Run `npm run preview` to start the frontend.
 
 ## Features
