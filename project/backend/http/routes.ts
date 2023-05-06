@@ -22,10 +22,8 @@ export default function configureRoutes(app: express.Application) {
         description: nandnas,
         price: 2,
         type: bike,
-        properties: {
-          color: red,
-          wheelSize: 12,
-        }
+        color: red,
+        wheelSize: 12,
       }
     ],
     totalItems: 59,

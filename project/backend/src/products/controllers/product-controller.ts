@@ -26,9 +26,12 @@ export const getProducts = async (req: Request, res: Response) => {
 export const getProductsByType = async (req: Request, res: Response) => {
   try {
     const { type }: { type: ProductType } = req.params;
-    const { sortBy, sortOrder }: { sortBy: keyof ProductProps, sortOrder: SortOrder } = req.query;
+    const { 
+      sortBy, sortOrder, page, items,
+    }: { sortBy: keyof ProductProps, sortOrder: SortOrder, page: number, items: number } = req.query;
+
     const filters = getFilterParams(req);
-    const products = await ProductRepo.getProductsByType(type, filters, sortBy, sortOrder);
+    const products = await ProductRepo.getProductsByType(type, filters, sortBy, sortOrder, page, items);
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

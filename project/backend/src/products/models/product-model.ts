@@ -1,4 +1,4 @@
-import { Schema, model, type Model, type Query } from 'mongoose';
+import { Schema, model, type Model, type Query, type FilterQuery } from 'mongoose';
 import { BikeProductSchema } from './products-adapters/bike-model';
 import { SpeakerProductSchema } from './products-adapters/speaker-model';
 import { LaptopProductSchema } from './products-adapters/laptop-model';
@@ -26,7 +26,9 @@ export interface BaseProduct {
 
 interface IProductModel extends Model<BaseProduct> {
   getProductsStats(): Promise<ProductStats[]>
-  getProductsByType(query: Query<Product, IProductModel>, sortQuery?: Query<Product, IProductModel>): Promise<Product[]>
+  getProductsByType(
+    query: FilterQuery<Product & { type: ProductType }>, sortQuery?: Query<Product, IProductModel>, itemsPerPage?: number, page?: number
+  ): Promise<Product[]>
 }
 
 const ProductSchema = new Schema<BaseProduct>(
@@ -60,8 +62,15 @@ ProductSchema.statics.getProductsStats = async function getProductsStats() {
   return productsByType;
 };
 
-ProductSchema.statics.getProductsByType = async function getProductsByType(query, sortQuery) {
-  const productsByType = await this.find(query).sort(sortQuery).exec();
+ProductSchema.statics.getProductsByType = async function getProductsByType(query, sortQuery, itemsPerPage, page) {
+  const skipCount = itemsPerPage * (page - 1);
+  const productsByType = 
+    await this
+      .find(query)
+      .sort(sortQuery)
+      .skip(skipCount)
+      .limit(itemsPerPage)
+      .exec();
   return productsByType;
 };
 
