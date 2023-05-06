@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'max-len': ['warn', 140],
     '@typescript-eslint/explicit-function-return-type': 'error',
     'react/jsx-filename-extension': [2, { 'extensions': ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/react-in-jsx-scope': 0,

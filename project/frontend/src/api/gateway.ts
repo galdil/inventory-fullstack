@@ -1,5 +1,6 @@
 import axios, { type AxiosResponse } from 'axios';
 
+import { type QueryParamsObj } from '@src/pages/Inventory/types';
 import { type ProductStats } from './type';
 import { type ProductType, type Product } from '../../../common/sharedTypes';
 
@@ -16,8 +17,9 @@ class Gateway {
     return res;
   }
 
-  static async getProductsByType(type: ProductType): Promise<AxiosResponse<Product[]>> {
-    const res = await Gateway.get<Product[]>(`products/${type}`);
+  static async getProductsByType(type: ProductType, queryParams: QueryParamsObj = {}): Promise<AxiosResponse<Product[]>> {
+    const queryString = new URLSearchParams(queryParams).toString();
+    const res = await Gateway.get<Product[]>(`products/${type}?${queryString}`);
     return res;
   }
 }
