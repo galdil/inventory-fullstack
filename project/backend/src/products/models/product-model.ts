@@ -1,9 +1,11 @@
-import { Schema, Document, model, Model } from 'mongoose';
-import { BikeProductSchema, type IBike } from './products-adapters/bike-model';
-import { SpeakerProductSchema, type ISpeaker } from './products-adapters/speaker-model';
-import { LaptopProductSchema, type ILaptop } from './products-adapters/laptop-model';
+import { Schema, type Document, model, type Model, type Query } from 'mongoose';
+import { BikeProductSchema } from './products-adapters/bike-model';
+import { SpeakerProductSchema } from './products-adapters/speaker-model';
+import { LaptopProductSchema } from './products-adapters/laptop-model';
 
-export type ProductType = 'bike' | 'speaker' | 'laptop';
+import { 
+  type ProductType, type Product, type IBike, type ISpeaker, type ILaptop,
+} from '../../../../common/sharedTypes';
 
 const baseOptions = {
   discriminatorKey: 'type',
@@ -22,10 +24,9 @@ export interface BaseProduct extends Document {
   type: ProductType;
 }
 
-export type Product = IBike | ISpeaker | ILaptop;
-
-export interface IProductModel extends Model<BaseProduct> {
+interface IProductModel extends Model<BaseProduct> {
   getProductsStats(): Promise<ProductStats[]>
+  getProductsByType(query: Query<Product, IProductModel>, sortQuery?: Query<Product, IProductModel>): Promise<Product[]>
 }
 
 const ProductSchema = new Schema<BaseProduct>(
@@ -55,6 +56,11 @@ ProductSchema.statics.getProductsStats = async function getProductsStats() {
     { $group: { _id: '$type', count: { $sum: 1 } } },
     { $project: { _id: 0, type: '$_id', count: 1 } },
   ]);
+  return productsByType;
+};
+
+ProductSchema.statics.getProductsByType = async function getProductsByType(query, sortQuery) {
+  const productsByType = await this.find(query).sort(sortQuery).exec();
   return productsByType;
 };
 

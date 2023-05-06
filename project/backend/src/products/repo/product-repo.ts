@@ -1,6 +1,7 @@
-import ProductModel, { type Product } from '../models/product-model';
+import ProductModel from '../models/product-model';
+import { type Product } from '../../../../common/sharedTypes';
 
-import { ProductCreationException, ProductStatsException } from '../../common/errors';
+import { ProductCreationException, ProductStatsException, ProductByTypeException } from '../../common/errors';
 
 const productRepo = {
   createProduct: async (productData: Product) => {
@@ -17,6 +18,20 @@ const productRepo = {
       return productStats;
     } catch (err) {
       throw new ProductStatsException(err?.message);
+    }
+  },
+  getProductsByType: async (type, filters, sortBy, sortOrder) => {
+    try {
+      const query = { type, ...filters };
+      let sortQuery;
+      if (sortBy) {
+        sortQuery = {};
+        sortQuery[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      }
+      const productStats = await ProductModel.getProductsByType(query, sortQuery);
+      return productStats;
+    } catch (err) {
+      throw new ProductByTypeException(err?.message);
     }
   },
 };

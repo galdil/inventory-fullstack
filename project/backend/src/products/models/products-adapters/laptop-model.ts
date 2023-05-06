@@ -1,11 +1,5 @@
 import { Schema } from 'mongoose';
-import { type BaseProduct } from '../product-model';
-
-export interface ILaptop extends BaseProduct {
-  brand: string;
-  color: string;
-  memory: string;
-}
+import { type ILaptop } from '../../../../../common/sharedTypes';
 
 export const LaptopProductSchema = new Schema<ILaptop>({
   brand: {
@@ -18,4 +12,3 @@ export const LaptopProductSchema = new Schema<ILaptop>({
     type: String,
   },
 });
-

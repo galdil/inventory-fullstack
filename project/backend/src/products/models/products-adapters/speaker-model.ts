@@ -1,11 +1,5 @@
 import { Schema } from 'mongoose';
-import { type BaseProduct } from '../product-model';
-
-export interface ISpeaker extends BaseProduct {
-  brand: string;
-  color: string;
-  wireless: boolean;
-}
+import { type ISpeaker } from '../../../../../common/sharedTypes';
 
 export const SpeakerProductSchema = new Schema<ISpeaker>({
   brand: {
@@ -18,4 +12,3 @@ export const SpeakerProductSchema = new Schema<ISpeaker>({
     type: String,
   },
 });
-

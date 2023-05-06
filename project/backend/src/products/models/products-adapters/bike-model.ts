@@ -1,11 +1,5 @@
 import { Schema } from 'mongoose';
-import { type BaseProduct } from '../product-model';
-
-export interface IBike extends BaseProduct {
-  wheelSize: number;
-  color: string;
-  frameMaterial: string;
-}
+import { type IBike } from '../../../../../common/sharedTypes';
 
 export const BikeProductSchema = new Schema<IBike>({
   frameMaterial: {
@@ -18,4 +12,3 @@ export const BikeProductSchema = new Schema<IBike>({
     type: String,
   },
 });
-

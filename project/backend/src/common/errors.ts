@@ -11,3 +11,10 @@ export class ProductStatsException extends Error {
     this.message = message;
   }
 }
+
+export class ProductByTypeException extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}
