@@ -1,5 +1,5 @@
 .navigator-wrapper {
-  /* width: 100px; */
+  width: 150px;
   display: grid;
   grid-template-rows: repeat(auto-fill, 25px);
   row-gap: 20px;

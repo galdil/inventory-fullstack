@@ -11,8 +11,8 @@ const StyledButton = styled(Button)({
   },
 });
 
-const MyButton = ({ label }: ButtonProps): JSX.Element => (
-  <StyledButton>
+const MyButton = ({ label, onClick, isSelected }: ButtonProps): JSX.Element => (
+  <StyledButton onClick={onClick} style={{ outline: isSelected ? '1px lightgreen solid' : 'none' }}>
     {label}
   </StyledButton>
 );

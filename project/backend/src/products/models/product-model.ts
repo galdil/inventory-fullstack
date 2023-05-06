@@ -55,6 +55,7 @@ ProductSchema.statics.getProductsStats = async function getProductsStats() {
   const productsByType = await this.aggregate([
     { $group: { _id: '$type', count: { $sum: 1 } } },
     { $project: { _id: 0, type: '$_id', count: 1 } },
+    { $sort: { type: 1 } },
   ]);
   return productsByType;
 };

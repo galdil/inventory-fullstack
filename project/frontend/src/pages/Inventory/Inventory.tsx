@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Divider from '@mui/material/Divider';
 import Navigator from '@components/Navigator/Navigator';
+// import ProductsTable from '@components/ProductsTable/ProductsTable';
 import { type ProductStats } from '@src/api/type';
 
 import Gateway from '@src/api/gateway';
@@ -22,7 +23,8 @@ const Inventory = (): JSX.Element => {
     <div className="sections-wrapper">
       <Navigator productsStats={productsStats} />
       <Divider orientation="vertical" sx={{ borderColor: 'white', height: '100%' }} />
-      <div>Gal</div>
+      {/* <ProductsTable /> */}
+      <div>dsdas</div>
     </div>
   );
 };
