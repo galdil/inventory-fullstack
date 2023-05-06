@@ -7,10 +7,20 @@ Welcome to your inventory site
 To start the application, please follow these steps:
 
 1. Clone the repository to your local machine
-2. Navigate to the root directory
-3. Run `npm install`
-4. Run `npm run start-be` to start the backend server. Runs on port 5000
-5. Run `npm run start-fe` to start the frontend server. Runs on port 3000
+
+### BE
+
+1. Navigate to project/backend
+2. Run `npm install`
+3. Run `npm build` 
+4. Run `npm run start` to start the backend server.
+
+### FE
+
+1. Navigate to project/frontend
+2. Run `npm install`
+3. Run `npm build` 
+4. Run `npm run preview` to start the frontend.
 
 ## Features
 
