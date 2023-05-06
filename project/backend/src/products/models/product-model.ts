@@ -1,4 +1,4 @@
-import { Schema, type Document, model, type Model, type Query } from 'mongoose';
+import { Schema, model, type Model, type Query } from 'mongoose';
 import { BikeProductSchema } from './products-adapters/bike-model';
 import { SpeakerProductSchema } from './products-adapters/speaker-model';
 import { LaptopProductSchema } from './products-adapters/laptop-model';
@@ -17,7 +17,7 @@ interface ProductStats {
   type: ProductType,
 }
 
-export interface BaseProduct extends Document {
+export interface BaseProduct {
   name: string;
   description: string;
   price: number;
