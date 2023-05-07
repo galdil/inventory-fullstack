@@ -4,7 +4,7 @@ import { SpeakerProductSchema } from './products-adapters/speaker-model';
 import { LaptopProductSchema } from './products-adapters/laptop-model';
 
 import { 
-  type ProductType, type Product, type IBike, type ISpeaker, type ILaptop,
+  ProductType, type Product, type IBike, type ISpeaker, type ILaptop,
 } from '../../../../common/sharedTypes';
 
 const baseOptions = {
@@ -83,9 +83,9 @@ ProductSchema.methods.toJSON = function () {
 
 const ProductModel = model<Product, IProductModel>('Product', ProductSchema);
 
-ProductModel.discriminator<IBike>('bike', BikeProductSchema);
-ProductModel.discriminator<ISpeaker>('speaker', SpeakerProductSchema);
-ProductModel.discriminator<ILaptop>('laptop', LaptopProductSchema);
+ProductModel.discriminator<IBike>(ProductType.BIKE, BikeProductSchema);
+ProductModel.discriminator<ISpeaker>(ProductType.SPEAKER, SpeakerProductSchema);
+ProductModel.discriminator<ILaptop>(ProductType.LAPTOP, LaptopProductSchema);
 
 
 export default ProductModel;

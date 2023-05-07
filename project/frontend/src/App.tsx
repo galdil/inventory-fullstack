@@ -5,7 +5,6 @@ import Inventory from '@pages/Inventory/Inventory';
 const App = (): JSX.Element => (
   <div className="app">
     <Inventory />
-    <br />
   </div>
 );
 

@@ -1,5 +1,16 @@
 import { type BaseProduct } from '../backend/src/products/models/product-model';
 
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+export enum ProductType {
+  BIKE = 'bike',
+  SPEAKER = 'speaker',
+  LAPTOP = 'laptop',
+}
+
 export interface IBike extends BaseProduct {
   wheelSize: number;
   color: string;
@@ -19,9 +30,3 @@ export interface ISpeaker extends BaseProduct {
 }
 
 export type Product = IBike | ISpeaker | ILaptop;
-
-export type SortOrder = 'asc' | 'desc';
-
-
-export type ProductType = 'bike' | 'speaker' | 'laptop';
-
