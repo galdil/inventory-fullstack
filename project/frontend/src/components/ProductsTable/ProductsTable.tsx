@@ -10,16 +10,11 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { useState } from 'react';
 import { ProductTableProps } from './types';
 
-import { type Product, type SortOrder } from '../../../../common/sharedTypes';
+import { SortOrder, type Product } from '../../../../common/sharedTypes';
 
 const toTitleCase = (str: string): string => (
   str.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase())
 );
-
-enum OrderOptions {
-  ASC = 'asc',
-  DESC = 'desc',
-}
 
 const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTableProps): JSX.Element => {
   const [sortBy, setSortBy] = useState<keyof Product>();
@@ -28,8 +23,8 @@ const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTablePr
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
   const createSortHandler = (field: keyof Product): void => {
-    const isAsc = sortBy === field && sortOrder === OrderOptions.ASC;
-    const sortOrderState = isAsc ? OrderOptions.DESC : OrderOptions.ASC;
+    const isAsc = sortBy === field && sortOrder === SortOrder.ASC;
+    const sortOrderState = isAsc ? SortOrder.DESC : SortOrder.ASC;
     setSortOrder(sortOrderState);
     setSortBy(field);
     handleQueryChange({ sortBy: field, sortOrder: sortOrderState });
@@ -62,7 +57,7 @@ const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTablePr
                   <TableSortLabel
                     onClick={(): void => createSortHandler(field as keyof Product)}
                     active={sortBy === field}
-                    direction={sortBy === field ? sortOrder : OrderOptions.ASC}
+                    direction={sortBy === field ? sortOrder : SortOrder.ASC}
                   >
                     {toTitleCase(field)}
                   </TableSortLabel>
