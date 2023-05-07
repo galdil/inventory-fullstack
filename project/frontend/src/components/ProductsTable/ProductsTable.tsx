@@ -8,9 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { useState } from 'react';
-import { ProductTableProps } from './types';
 
-import { SortOrder, type Product } from '../../../../common/sharedTypes';
+import { SortOrder, type Product } from '@common/sharedTypes';
+
+import { ProductTableProps } from './types';
 
 const toTitleCase = (str: string): string => (
   str.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase())
