@@ -14,7 +14,7 @@ import { toTitleCase } from '../../common/utils';
 
 import { ProductTableProps } from './types';
 
-const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTableProps): JSX.Element => {
+const ProductsTable = ({ productsData, handleQueryChange, productCount }: ProductTableProps): JSX.Element => {
   const [sortBy, setSortBy] = useState<keyof Product>();
   const [sortOrder, setSortOrder] = useState<SortOrder>();
   const [page, setPage] = useState<number>(0);
@@ -47,10 +47,10 @@ const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTablePr
         <Table sx={{ minWidth: '1000px', overflow: 'scroll' }} aria-label="simple table">
           <TableHead sx={{ background: 'lightgreen' }}>
             <TableRow
-              key={data?.[0].name}
+              key={productsData?.[0].name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {data && Object.keys(data[0]).map((field) => (
+              {productsData && Object.keys(productsData[0]).map((field) => (
                 <TableCell key={field}>
                   <TableSortLabel
                     onClick={(): void => createSortHandler(field as keyof Product)}
@@ -64,7 +64,7 @@ const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTablePr
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((row) => (
+            {productsData?.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

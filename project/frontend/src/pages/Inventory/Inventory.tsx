@@ -57,7 +57,7 @@ const Inventory = (): JSX.Element => {
         handleTypeSelection={handleTypeSelection}
       />
       <Divider orientation="vertical" sx={{ borderColor: 'white', height: '100%' }} />
-      <ProductsTable data={productsData} handleQueryChange={handleQueryChange} productCount={currentCount} />
+      <ProductsTable productsData={productsData} handleQueryChange={handleQueryChange} productCount={currentCount} />
     </div>
   );
 };
