@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import TableBody from '@mui/material/TableBody';
@@ -7,15 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { useState } from 'react';
 
 import { SortOrder, type Product } from '@common/sharedTypes';
+import { toTitleCase } from '../../common/utils';
 
 import { ProductTableProps } from './types';
-
-const toTitleCase = (str: string): string => (
-  str.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase())
-);
 
 const ProductsTable = ({ data, handleQueryChange, productCount }: ProductTableProps): JSX.Element => {
   const [sortBy, setSortBy] = useState<keyof Product>();
