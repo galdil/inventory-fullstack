@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import FilterSelection from '@components/FilterSelection/FilterSelection';
 
 import { SortOrder, type Product } from '@common/sharedTypes';
 import { toTitleCase } from '../../common/utils';
@@ -50,17 +51,21 @@ const ProductsTable = ({ productsData, handleQueryChange, productCount }: Produc
               key={productsData?.[0].name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {productsData && Object.keys(productsData[0]).map((field) => (
-                <TableCell key={field}>
-                  <TableSortLabel
-                    onClick={(): void => createSortHandler(field as keyof Product)}
-                    active={sortBy === field}
-                    direction={sortBy === field ? sortOrder : SortOrder.ASC}
-                  >
-                    {toTitleCase(field)}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
+              {productsData && Object.keys(productsData[0]).map((field) => {
+                const sanitizedField = toTitleCase(field);
+                return (
+                  <TableCell key={field}>
+                    <TableSortLabel
+                      onClick={(): void => createSortHandler(field as keyof Product)}
+                      active={sortBy === field}
+                      direction={sortBy === field ? sortOrder : SortOrder.ASC}
+                    >
+                      {sanitizedField}
+                    </TableSortLabel>
+                    <FilterSelection filterOptions={['adc', 'dsda']} />
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
           <TableBody>

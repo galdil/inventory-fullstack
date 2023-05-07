@@ -1,0 +1,3 @@
+type FilterSelectionProps = {
+  filterOptions: string[];
+};
