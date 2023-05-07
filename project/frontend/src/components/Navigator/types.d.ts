@@ -1,5 +1,5 @@
 import { type ProductStats } from '@src/api/type';
-import { type ProductType } from '../../../../common/sharedTypes';
+import { type ProductType } from '@common/sharedTypes';
 
 type NavigatorProps = {
   productsStats: ProductStats[];

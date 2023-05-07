@@ -1,4 +1,4 @@
-import { type ProductType } from '../../../common/sharedTypes';
+import { type ProductType } from '@common/sharedTypes';
 
 type ProductStats = {
   count: number;

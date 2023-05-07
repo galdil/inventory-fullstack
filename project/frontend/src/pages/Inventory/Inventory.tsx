@@ -5,16 +5,28 @@ import Gateway from '@src/api/gateway';
 import ProductsTable from '@components/ProductsTable/ProductsTable';
 
 import { type ProductStats } from '@src/api/type';
-import { type ProductType, type Product } from '../../../../common/sharedTypes';
+import { ProductType, type Product } from '@common/sharedTypes';
 import { QueryParamsObj } from './types';
 
 import './inventory.css';
+
+const productsDataMock: Product[] = [
+  {
+    name: 'Mountain Bike',
+    type: ProductType.BIKE,
+    description: 'A high-performance mountain bike',
+    price: 1000,
+    wheelSize: 26,
+    color: 'Blue',
+    frameMaterial: 'Carbon Fiber',
+  },
+];
 
 const Inventory = (): JSX.Element => {
   const [productsStats, setProductsStats] = useState<ProductStats[]>([]);
   const [currentType, setCurrentType] = useState<ProductType>();
   const [currentCount, setCurrentCount] = useState<number>(0);
-  const [productsData, setProductsData] = useState<Product[]>();
+  const [productsData, setProductsData] = useState<Product[]>(productsDataMock);
   const [queryParams, setQueryParams] = useState<QueryParamsObj>({ page: '1', items: '5' });
 
   const handleTypeSelection = (selectedType: ProductType): void => {

@@ -1,8 +1,8 @@
 import axios, { type AxiosResponse } from 'axios';
 
 import { type QueryParamsObj } from '@src/pages/Inventory/types';
+import { type ProductType, type Product } from '@common/sharedTypes';
 import { type ProductStats } from './type';
-import { type ProductType, type Product } from '../../../common/sharedTypes';
 
 const BE_URL = import.meta.env.VITE_INVENTORY_URL;
 

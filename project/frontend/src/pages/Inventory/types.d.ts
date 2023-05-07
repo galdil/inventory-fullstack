@@ -1,4 +1,4 @@
-import { type Product, type SortOrder } from '../../../../common/sharedTypes';
+import { type Product, type SortOrder } from '@common/sharedTypes';
 
 type QueryParamsObj = {
   sortBy?: keyof Product;

@@ -1,7 +1,7 @@
 import Button from '@components/Button/Button';
 
+import { type ProductType } from '@common/sharedTypes';
 import { type NavigatorProps } from './types';
-import { type ProductType } from '../../../../common/sharedTypes';
 
 import './navigator.css';
 

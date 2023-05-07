@@ -1,5 +1,5 @@
 import { QueryParamsObj } from '@src/pages/Inventory/types';
-import { type Product } from '../../../../common/sharedTypes';
+import { type Product } from '@common/sharedTypes';
 
 type ProductTableProps = {
   productsData?: Product[];
