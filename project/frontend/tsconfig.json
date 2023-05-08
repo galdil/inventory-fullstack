@@ -20,7 +20,7 @@
       "@src/*": ["src/*"],
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
-      "@common/sharedTypes": ["../common/sharedTypes.d.ts"],
+      "@common/sharedTypes": ["../common/sharedTypes.ts"],
     }
   },
   "include": ["src", "vite.config.ts"],

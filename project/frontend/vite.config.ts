@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       '@src': path.resolve(__dirname, './src'),
       '@pages': path.resolve(__dirname, './src/pages'),
-      '@common/sharedTypes': path.resolve(__dirname, '../common/sharedTypes.d.ts'),
+      '@common/sharedTypes': path.resolve(__dirname, '../common/sharedTypes.ts'),
       '@components': path.resolve(__dirname, './src/components'),
     },
   },
