@@ -79,6 +79,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
       const response = await Gateway.getProductsFiltersValuesByType(selectedProductType);
       const filtersValuesRes = response?.data;
       setFiltersValues(filtersValuesRes);
+      setFiltersStr('');
     };
     if (selectedProductType) {
       fetchProductData();
@@ -88,10 +89,10 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
   const renderTableHeader = (): JSX.Element => (
     <TableHead sx={{ background: 'lightgreen' }}>
       <TableRow
-        key={productsData?.[0].name}
+        key="table-header"
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        {productsData && (Object.keys(productsData[0]) as ProductsFields[]).map((field) => {
+        {productsData?.length ? (Object.keys(productsData[0]) as ProductsFields[]).map((field) => {
           const sanitizedField = toTitleCase(field);
           return (
             <TableCell key={field}>
@@ -108,7 +109,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
               />
             </TableCell>
           );
-        })}
+        }) : <TableCell />}
       </TableRow>
     </TableHead>
   );
