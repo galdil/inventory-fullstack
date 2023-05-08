@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 import Gateway from '@src/api/gateway';
-import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import TablePagination from '@mui/material/TablePagination';
 import FilterSelection from '@components/FilterSelection/FilterSelection';
 
 import { SortOrder, type Product, ProductsFields } from '@common/sharedTypes';
+import { ProductTableProps, QueryParamsObj } from './types';
 import { toTitleCase } from '../../common/utils';
 
-import { ProductTableProps, QueryParamsObj } from './types';
+import './productsTable.css';
 
 const defaultPaging = {
   page: '1',
@@ -130,7 +131,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
   );
 
   return (
-    <div>
+    <div className="table-wrapper">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: '1000px', overflow: 'scroll' }} aria-label="simple table">
           {renderTableHeader()}
