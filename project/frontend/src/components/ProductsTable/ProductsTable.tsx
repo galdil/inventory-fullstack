@@ -11,23 +11,24 @@ import TablePagination from '@mui/material/TablePagination';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import FilterSelection from '@components/FilterSelection/FilterSelection';
 
-import { SortOrder, type Product } from '@common/sharedTypes';
+import { SortOrder, type Product, ProductsFields } from '@common/sharedTypes';
 import { toTitleCase } from '../../common/utils';
 
 import { ProductTableProps, QueryParamsObj } from './types';
 
 const defaultPaging = {
   page: '1',
-  items: '2',
+  items: '5',
 };
 
 const defaultRowPerPage = 5;
 
 const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTableProps): JSX.Element => {
-  const [productsData, setProductsData] = useState<Product[]>();
-  const [sortBy, setSortBy] = useState<keyof Product>();
-  const [sortOrder, setSortOrder] = useState<SortOrder>();
   const [page, setPage] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<ProductsFields>();
+  const [sortOrder, setSortOrder] = useState<SortOrder>();
+  const [productsData, setProductsData] = useState<Product[]>();
+  const [filtersValues, setFiltersValues] = useState<Record<ProductsFields, any>>();
   const [rowsPerPage, setRowsPerPage] = useState<number>(defaultRowPerPage);
   const [queryParams, setQueryParams] = useState<QueryParamsObj>(defaultPaging);
 
@@ -35,7 +36,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     setQueryParams({ ...queryParams, ...queryParamsObj });
   };
 
-  const createSortHandler = (field: keyof Product): void => {
+  const createSortHandler = (field: ProductsFields): void => {
     const isAsc = sortBy === field && sortOrder === SortOrder.ASC;
     const sortOrderState = isAsc ? SortOrder.DESC : SortOrder.ASC;
     setSortOrder(sortOrderState);
@@ -67,6 +68,17 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     }
   }, [selectedProductType, queryParams]);
 
+  useEffect(() => {
+    const fetchProductData = async (): Promise<void> => {
+      const response = await Gateway.getProductsFiltersValuesByType(selectedProductType);
+      const filtersValuesRes = response?.data;
+      setFiltersValues(filtersValuesRes);
+    };
+    if (selectedProductType) {
+      fetchProductData();
+    }
+  }, [selectedProductType]);
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -81,13 +93,13 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
                 return (
                   <TableCell key={field}>
                     <TableSortLabel
-                      onClick={(): void => createSortHandler(field as keyof Product)}
+                      onClick={(): void => createSortHandler(field as ProductsFields)}
                       active={sortBy === field}
                       direction={sortBy === field ? sortOrder : SortOrder.ASC}
                     >
                       {sanitizedField}
                     </TableSortLabel>
-                    <FilterSelection filterOptions={['adc', 'dsda']} />
+                    <FilterSelection filterValues={filtersValues?.[field as ProductsFields] || []} />
                   </TableCell>
                 );
               })}

@@ -3,8 +3,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-const FilterSelection = ({ filterOptions }: FilterSelectionProps): JSX.Element => {
-  const [filters, setFilters] = useState<string[]>([]);
+const FilterSelection = ({ filterValues }: FilterSelectionProps): JSX.Element => {
+  const [filters, setFilters] = useState<any>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof filters>): void => {
     const {
@@ -35,7 +35,7 @@ const FilterSelection = ({ filterOptions }: FilterSelectionProps): JSX.Element =
           <MenuItem disabled value="">
             <em>Filter</em>
           </MenuItem>
-          {filterOptions.map((option) => (
+          {filterValues.map((option) => (
             <MenuItem
               key={option}
               value={option}

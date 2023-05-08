@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
 
 import { type QueryParamsObj } from '@components/ProductsTable/types';
-import { type ProductType, type Product } from '@common/sharedTypes';
+import type { ProductType, Product, ProductsFields } from '@common/sharedTypes';
 import { type ProductStats } from './type';
 
 const BE_URL = import.meta.env.VITE_INVENTORY_URL;
@@ -13,19 +13,19 @@ class Gateway {
   }
 
   static async getProductStats(): Promise<AxiosResponse<ProductStats[]>> {
-    const res = await Gateway.get<ProductStats[]>('products/stats');
-    return res;
+    const productStats = await Gateway.get<ProductStats[]>('products/stats');
+    return productStats;
   }
 
   static async getProductsByType(type: ProductType, queryParams: QueryParamsObj = {}): Promise<AxiosResponse<Product[]>> {
     const queryString = new URLSearchParams(queryParams).toString();
-    const res = await Gateway.get<Product[]>(`products/${type}?${queryString}`);
-    return res;
+    const products = await Gateway.get<Product[]>(`products/${type}?${queryString}`);
+    return products;
   }
 
-  static async getProductsFilterValuesByType(type: ProductType): Promise<AxiosResponse<Record<keyof Product, any>>> {
-    const res = await Gateway.get<Record<keyof Product, any>>(`/products/fields/${type}`);
-    return res;
+  static async getProductsFiltersValuesByType(type: ProductType): Promise<AxiosResponse<Record<ProductsFields, any>>> {
+    const filtersValues = await Gateway.get<Record<ProductsFields, any>>(`products/fields/${type}`);
+    return filtersValues;
   }
 }
 

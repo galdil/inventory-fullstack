@@ -1,3 +1,3 @@
 type FilterSelectionProps = {
-  filterOptions: string[];
+  filterValues: any[];
 };

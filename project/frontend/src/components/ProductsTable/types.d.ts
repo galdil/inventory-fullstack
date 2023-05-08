@@ -1,4 +1,4 @@
-import { type Product, type SortOrder } from '@common/sharedTypes';
+import type { ProductsFields, SortOrder } from '@common/sharedTypes';
 
 type ProductTableProps = {
   currentProductCount: number;
@@ -6,7 +6,7 @@ type ProductTableProps = {
 };
 
 type QueryParamsObj = {
-  sortBy?: keyof Product;
+  sortBy?: ProductsFields;
   sortOrder?: SortOrder
   page?: string;
   items?: string;

@@ -30,3 +30,5 @@ export interface ISpeaker extends BaseProduct {
 }
 
 export type Product = IBike | ISpeaker | ILaptop;
+
+export type ProductsFields = keyof Product;

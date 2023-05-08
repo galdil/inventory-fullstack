@@ -1,10 +1,9 @@
 import { Request } from 'express';
 
-import { type Product } from '../../../common/sharedTypes';
+import type { ProductsFields } from '../../../common/sharedTypes';
 
-type ProductKeys = keyof Product;
 
-export const getFilterParams = (req: Request): ProductKeys[] => {
+export const getFilterParams = (req: Request): ProductsFields[] => {
   const values = req.query.filters || {};
   Object.keys(values).forEach((item) => {
     const results = [];

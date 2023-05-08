@@ -3,7 +3,7 @@ import ProductRepo from '../repo/product-repo';
 
 import { getFilterParams } from '../../common/utils';
 
-import { type ProductType, type Product as ProductProps, type SortOrder } from '../../../../common/sharedTypes';
+import type { ProductType, ProductsFields, SortOrder } from '../../../../common/sharedTypes';
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -28,7 +28,7 @@ export const getProductsByType = async (req: Request, res: Response) => {
     const { type }: { type: ProductType } = req.params;
     const { 
       sortBy, sortOrder, page, items,
-    }: { sortBy: keyof ProductProps, sortOrder: SortOrder, page: number, items: number } = req.query;
+    }: { sortBy: ProductsFields, sortOrder: SortOrder, page: number, items: number } = req.query;
 
     const filters = getFilterParams(req);
     const products = await ProductRepo.getProductsByType(type, filters, sortBy, sortOrder, page, items);

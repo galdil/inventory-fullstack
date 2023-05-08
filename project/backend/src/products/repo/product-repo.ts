@@ -1,11 +1,9 @@
 import ProductModel from '../models/product-model';
-import { type ProductType, type Product, type SortOrder } from '../../../../common/sharedTypes';
+import type { ProductType, Product, SortOrder, ProductsFields } from '../../../../common/sharedTypes';
 
 import {
   ProductCreationException, ProductStatsException, ProductByTypeException, ProductsFieldsByTypeException,
 } from '../../common/errors';
-
-type ProductsFields = keyof Product;
 
 const productRepo = {
   createProduct: async (productData: Product) => {
