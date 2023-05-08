@@ -31,6 +31,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
   const [filtersValues, setFiltersValues] = useState<Record<ProductsFields, any>>();
   const [rowsPerPage, setRowsPerPage] = useState<number>(defaultRowPerPage);
   const [queryParams, setQueryParams] = useState<QueryParamsObj>(defaultPaging);
+  const [filtersStr, setFiltersStr] = useState<string>('');
 
   const handleQueryChange = (queryParamsObj: QueryParamsObj): void => {
     setQueryParams({ ...queryParams, ...queryParamsObj });
@@ -54,19 +55,24 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     const itemsPerPage = event.target.value;
     handleQueryChange({ page: '1', items: itemsPerPage });
     setPage(0);
-    setRowsPerPage(parseInt(itemsPerPage, 10));
+    setRowsPerPage(parseInt(itemsPerPage, defaultRowPerPage));
+  };
+
+  const handleFilterChange = (field: ProductsFields, filters: string[]): void => {
+    const filtersString = `filters[${field}]=${filters}`;
+    setFiltersStr(`${filtersStr}&${filtersString}`);
   };
 
   useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
-      const response = await Gateway.getProductsByType(selectedProductType, queryParams);
+      const response = await Gateway.getProductsByType(selectedProductType, queryParams, filtersStr);
       const productsRes = response?.data;
       setProductsData(productsRes);
     };
     if (selectedProductType) {
       fetchProductData();
     }
-  }, [selectedProductType, queryParams]);
+  }, [selectedProductType, queryParams, filtersStr]);
 
   useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
@@ -79,44 +85,55 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     }
   }, [selectedProductType]);
 
+  const renderTableHeader = (): JSX.Element => (
+    <TableHead sx={{ background: 'lightgreen' }}>
+      <TableRow
+        key={productsData?.[0].name}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      >
+        {productsData && (Object.keys(productsData[0]) as ProductsFields[]).map((field) => {
+          const sanitizedField = toTitleCase(field);
+          return (
+            <TableCell key={field}>
+              <TableSortLabel
+                onClick={(): void => createSortHandler(field)}
+                active={sortBy === field}
+                direction={sortBy === field ? sortOrder : SortOrder.ASC}
+              >
+                {sanitizedField}
+              </TableSortLabel>
+              <FilterSelection
+                filterValues={filtersValues?.[field] || []}
+                handleFilterChange={(filters): void => handleFilterChange(field, filters)}
+              />
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    </TableHead>
+  );
+
+  const renderTableBody = (): JSX.Element => (
+    <TableBody>
+      {productsData?.map((row) => (
+        <TableRow
+          key={row.name}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          {Object.values(row).map((value) => (
+            <TableCell key={`${row.name}_${value}`}>{value.toString()}</TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+
   return (
     <div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: '1000px', overflow: 'scroll' }} aria-label="simple table">
-          <TableHead sx={{ background: 'lightgreen' }}>
-            <TableRow
-              key={productsData?.[0].name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              {productsData && Object.keys(productsData[0]).map((field) => {
-                const sanitizedField = toTitleCase(field);
-                return (
-                  <TableCell key={field}>
-                    <TableSortLabel
-                      onClick={(): void => createSortHandler(field as ProductsFields)}
-                      active={sortBy === field}
-                      direction={sortBy === field ? sortOrder : SortOrder.ASC}
-                    >
-                      {sanitizedField}
-                    </TableSortLabel>
-                    <FilterSelection filterValues={filtersValues?.[field as ProductsFields] || []} />
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {productsData?.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                {Object.values(row).map((value) => (
-                  <TableCell key={`${row.name}_${value}`}>{value.toString()}</TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
+          {renderTableHeader()}
+          {renderTableBody()}
         </Table>
       </TableContainer>
       <TablePagination

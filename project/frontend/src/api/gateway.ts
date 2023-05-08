@@ -17,9 +17,9 @@ class Gateway {
     return productStats;
   }
 
-  static async getProductsByType(type: ProductType, queryParams: QueryParamsObj = {}): Promise<AxiosResponse<Product[]>> {
+  static async getProductsByType(type: ProductType, queryParams: QueryParamsObj = {}, filtersString = ''): Promise<AxiosResponse<Product[]>> {
     const queryString = new URLSearchParams(queryParams).toString();
-    const products = await Gateway.get<Product[]>(`products/${type}?${queryString}`);
+    const products = await Gateway.get<Product[]>(`products/${type}?${queryString}&${filtersString}`);
     return products;
   }
 

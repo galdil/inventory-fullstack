@@ -3,16 +3,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-const FilterSelection = ({ filterValues }: FilterSelectionProps): JSX.Element => {
-  const [filters, setFilters] = useState<any>([]);
+const FilterSelection = ({ filterValues, handleFilterChange }: FilterSelectionProps): JSX.Element => {
+  const [filters, setFilters] = useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof filters>): void => {
-    const {
-      target: { value },
-    } = event;
-    setFilters(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    const { target: { value } } = event;
+    const filtersArray = typeof value === 'string' ? value.split(',') : value;
+    handleFilterChange(filtersArray);
+    setFilters(filtersArray);
   };
 
   return (
