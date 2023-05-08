@@ -1,8 +1,13 @@
-import { QueryParamsObj } from '@src/pages/Inventory/types';
-import { type Product } from '@common/sharedTypes';
+import { type Product, type SortOrder } from '@common/sharedTypes';
 
 type ProductTableProps = {
-  productsData?: Product[];
-  handleQueryChange: (queryParamObj: QueryParamsObj) => void;
-  productCount: number;
+  currentProductCount: number;
+  selectedProductType: ProductType;
+};
+
+type QueryParamsObj = {
+  sortBy?: keyof Product;
+  sortOrder?: SortOrder
+  page?: string;
+  items?: string;
 };

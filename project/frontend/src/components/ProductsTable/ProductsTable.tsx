@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Gateway from '@src/api/gateway';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import TableBody from '@mui/material/TableBody';
@@ -13,13 +14,26 @@ import FilterSelection from '@components/FilterSelection/FilterSelection';
 import { SortOrder, type Product } from '@common/sharedTypes';
 import { toTitleCase } from '../../common/utils';
 
-import { ProductTableProps } from './types';
+import { ProductTableProps, QueryParamsObj } from './types';
 
-const ProductsTable = ({ productsData, handleQueryChange, productCount }: ProductTableProps): JSX.Element => {
+const defaultPaging = {
+  page: '1',
+  items: '2',
+};
+
+const defaultRowPerPage = 5;
+
+const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTableProps): JSX.Element => {
+  const [productsData, setProductsData] = useState<Product[]>();
   const [sortBy, setSortBy] = useState<keyof Product>();
   const [sortOrder, setSortOrder] = useState<SortOrder>();
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(defaultRowPerPage);
+  const [queryParams, setQueryParams] = useState<QueryParamsObj>(defaultPaging);
+
+  const handleQueryChange = (queryParamsObj: QueryParamsObj): void => {
+    setQueryParams({ ...queryParams, ...queryParamsObj });
+  };
 
   const createSortHandler = (field: keyof Product): void => {
     const isAsc = sortBy === field && sortOrder === SortOrder.ASC;
@@ -41,6 +55,17 @@ const ProductsTable = ({ productsData, handleQueryChange, productCount }: Produc
     setPage(0);
     setRowsPerPage(parseInt(itemsPerPage, 10));
   };
+
+  useEffect(() => {
+    const fetchProductData = async (): Promise<void> => {
+      const response = await Gateway.getProductsByType(selectedProductType, queryParams);
+      const productsRes = response?.data;
+      setProductsData(productsRes);
+    };
+    if (selectedProductType) {
+      fetchProductData();
+    }
+  }, [selectedProductType, queryParams]);
 
   return (
     <div>
@@ -85,7 +110,7 @@ const ProductsTable = ({ productsData, handleQueryChange, productCount }: Produc
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={productCount}
+        count={currentProductCount}
         rowsPerPage={rowsPerPage}
         page={page}
         sx={{ color: 'white' }}

@@ -5,38 +5,19 @@ import Gateway from '@src/api/gateway';
 import ProductsTable from '@components/ProductsTable/ProductsTable';
 
 import { type ProductStats } from '@src/api/type';
-import { ProductType, type Product } from '@common/sharedTypes';
-import { QueryParamsObj } from './types';
+import { ProductType } from '@common/sharedTypes';
 
 import './inventory.css';
 
-const productsDataMock: Product[] = [
-  {
-    name: 'Mountain Bike',
-    type: ProductType.BIKE,
-    description: 'A high-performance mountain bike',
-    price: 1000,
-    wheelSize: 26,
-    color: 'Blue',
-    frameMaterial: 'Carbon Fiber',
-  },
-];
-
 const Inventory = (): JSX.Element => {
   const [productsStats, setProductsStats] = useState<ProductStats[]>([]);
-  const [currentType, setCurrentType] = useState<ProductType>();
-  const [currentCount, setCurrentCount] = useState<number>(0);
-  const [productsData, setProductsData] = useState<Product[]>(productsDataMock);
-  const [queryParams, setQueryParams] = useState<QueryParamsObj>({ page: '1', items: '5' });
+  const [selectedProductType, setSelectedProductType] = useState<ProductType>();
+  const [currentProductCount, setCurrentProductCount] = useState<number>(0);
 
   const handleTypeSelection = (selectedType: ProductType): void => {
-    setCurrentType(selectedType);
+    setSelectedProductType(selectedType);
     const selectedTypeCount = productsStats.find((product) => product.type === selectedType)?.count || 0;
-    setCurrentCount(selectedTypeCount);
-  };
-
-  const handleQueryChange = (queryParamsObj: QueryParamsObj): void => {
-    setQueryParams({ ...queryParams, ...queryParamsObj });
+    setCurrentProductCount(selectedTypeCount);
   };
 
   useEffect(() => {
@@ -44,32 +25,21 @@ const Inventory = (): JSX.Element => {
       const response = await Gateway.getProductStats();
       const productsStatsRes = response?.data;
       setProductsStats(productsStatsRes);
-      setCurrentType(productsStatsRes?.[0]?.type);
-      setCurrentCount(productsStatsRes?.[0]?.count || 0);
+      setSelectedProductType(productsStatsRes?.[0]?.type);
+      setCurrentProductCount(productsStatsRes?.[0]?.count || 0);
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const fetchProductData = async (): Promise<void> => {
-      const response = await Gateway.getProductsByType(currentType!, queryParams);
-      const productsRes = response?.data;
-      setProductsData(productsRes);
-    };
-    if (currentType) {
-      fetchProductData();
-    }
-  }, [currentType, queryParams]);
 
   return (
     <div className="sections-wrapper">
       <Navigator
         productsStats={productsStats}
-        selectedType={currentType}
+        selectedType={selectedProductType}
         handleTypeSelection={handleTypeSelection}
       />
       <Divider orientation="vertical" sx={{ borderColor: 'white', height: '100%' }} />
-      <ProductsTable productsData={productsData} handleQueryChange={handleQueryChange} productCount={currentCount} />
+      <ProductsTable selectedProductType={selectedProductType} currentProductCount={currentProductCount} />
     </div>
   );
 };
