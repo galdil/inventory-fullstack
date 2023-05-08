@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import Gateway from '@src/api/gateway';
 import Divider from '@mui/material/Divider';
 import Navigator from '@components/Navigator/Navigator';
-import Gateway from '@src/api/gateway';
 import ProductsTable from '@components/ProductsTable/ProductsTable';
 
 import { type ProductStats } from '@src/api/type';
