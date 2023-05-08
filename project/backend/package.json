@@ -7,7 +7,7 @@
     "compile": "tsc",
     "build": "npm run compile",
     "start": "node dist/index.js",
-    "dev": "tsc -w & nodemon ./dist/index.js",
+    "dev": "ts-node --files index.ts -w & nodemon index.ts",
     "lint": "eslint ./src"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
 }

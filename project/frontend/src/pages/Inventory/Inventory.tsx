@@ -44,8 +44,8 @@ const Inventory = (): JSX.Element => {
       const response = await Gateway.getProductStats();
       const productsStatsRes = response?.data;
       setProductsStats(productsStatsRes);
-      setCurrentType(productsStatsRes?.[0].type);
-      setCurrentCount(productsStatsRes?.[0].count);
+      setCurrentType(productsStatsRes?.[0]?.type);
+      setCurrentCount(productsStatsRes?.[0]?.count || 0);
     };
     fetchData();
   }, []);
