@@ -11,3 +11,7 @@ type QueryParamsObj = {
   page?: string;
   items?: string;
 };
+
+type ProductFilters = {
+  [field in ProductsFields]?: string[]
+};

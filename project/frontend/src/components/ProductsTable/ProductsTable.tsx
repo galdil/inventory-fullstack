@@ -12,8 +12,8 @@ import TablePagination from '@mui/material/TablePagination';
 import FilterSelection from '@components/FilterSelection/FilterSelection';
 
 import { SortOrder, type Product, ProductsFields } from '@common/sharedTypes';
-import { ProductTableProps, QueryParamsObj } from './types';
-import { toTitleCase } from '../../common/utils';
+import { ProductTableProps, QueryParamsObj, ProductFilters } from './types';
+import { toTitleCase, convertToQueryString } from '../../common/utils';
 
 import './productsTable.css';
 
@@ -32,7 +32,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
   const [filtersValues, setFiltersValues] = useState<Record<ProductsFields, any>>();
   const [rowsPerPage, setRowsPerPage] = useState<number>(defaultRowPerPage);
   const [queryParams, setQueryParams] = useState<QueryParamsObj>(defaultPaging);
-  const [filtersStr, setFiltersStr] = useState<string>('');
+  const [filtersObj, setFiltersObj] = useState<ProductFilters>({});
 
   const handleQueryChange = (queryParamsObj: QueryParamsObj): void => {
     setQueryParams({ ...queryParams, ...queryParamsObj });
@@ -60,12 +60,20 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
   };
 
   const handleFilterChange = (field: ProductsFields, filters: string[]): void => {
-    const filtersString = `filters[${field}]=${filters}`;
-    setFiltersStr(`${filtersStr}&${filtersString}`);
+    const newFiltersObj = {
+      ...filtersObj,
+      [field]: filters,
+    };
+    if (!filters.length) {
+      delete newFiltersObj[field];
+    }
+
+    setFiltersObj(newFiltersObj);
   };
 
   useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
+      const filtersStr = convertToQueryString(filtersObj);
       const response = await Gateway.getProductsByType(selectedProductType, queryParams, filtersStr);
       const productsRes = response?.data;
       setProductsData(productsRes);
@@ -73,14 +81,14 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     if (selectedProductType) {
       fetchProductData();
     }
-  }, [selectedProductType, queryParams, filtersStr]);
+  }, [selectedProductType, queryParams, filtersObj]);
 
   useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
       const response = await Gateway.getProductsFiltersValuesByType(selectedProductType);
       const filtersValuesRes = response?.data;
       setFiltersValues(filtersValuesRes);
-      setFiltersStr('');
+      setFiltersObj({});
     };
     if (selectedProductType) {
       fetchProductData();
@@ -93,7 +101,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
         key="table-header"
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        {productsData?.length ? (Object.keys(productsData[0]) as ProductsFields[]).map((field) => {
+        {filtersValues ? (Object.keys(filtersValues) as ProductsFields[]).map((field) => {
           const sanitizedField = toTitleCase(field);
           return (
             <TableCell key={field}>
