@@ -56,7 +56,7 @@ const ProductsTable = ({ selectedProductType, currentProductCount }: ProductTabl
     const itemsPerPage = event.target.value;
     handleQueryChange({ page: '1', items: itemsPerPage });
     setPage(0);
-    setRowsPerPage(parseInt(itemsPerPage, defaultRowPerPage));
+    setRowsPerPage(parseInt(itemsPerPage, 10));
   };
 
   const handleFilterChange = (field: ProductsFields, filters: string[]): void => {
