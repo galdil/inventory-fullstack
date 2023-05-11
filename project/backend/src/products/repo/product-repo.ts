@@ -1,5 +1,5 @@
 import ProductModel from '../models/product-model';
-import type { ProductType, Product, SortOrder, ProductsFields } from '../../../../common/sharedTypes';
+import { type ProductType, type Product, SortOrder, type ProductsFields } from '../../../../common/sharedTypes';
 
 import {
   ProductCreationException, ProductStatsException, ProductByTypeException, ProductsFieldsByTypeException,
@@ -28,7 +28,7 @@ const productRepo = {
       let sortQuery;
       if (sortBy) {
         sortQuery = {};
-        sortQuery[sortBy] = sortOrder === 'desc' ? -1 : 1;
+        sortQuery[sortBy] = sortOrder === SortOrder.DESC ? -1 : 1;
       }
       const productStats = await ProductModel.getProductsByType(query, sortQuery, items, page);
       return productStats;
